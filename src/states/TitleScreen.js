@@ -9,8 +9,15 @@ const TitleScreen = () => {
 
     },
 
-    processRealtimeInput: (event, isKeyPressed) => {
-
+    processRealtimeInput: (controllers) => {
+      for (let i in controllers) {
+        if (controllers[i].buttonEvents.length) {
+          console.log(controllers[i].buttonEvents)
+        }
+        if (controllers[i].axisEvents.length) {
+          console.log(controllers[i].axisEvents)
+        }
+      }
     },
 
     draw: (canvas) => {

@@ -38,10 +38,10 @@ const StateStack = () => {
       })
     },
 
-    processRealtimeInput: function (event, isKeyPressed) {
+    processRealtimeInput: function (events) {
       for (let i = this.states.length - 1; i >= 0; i--) {
         // pass events to each state from top of stack to bottom
-        this.states[i].processRealtimeInput(event, isKeyPressed)
+        this.states[i].processRealtimeInput(events)
       }
     },
 

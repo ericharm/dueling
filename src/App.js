@@ -1,12 +1,12 @@
 import Config from '../config/config.js'
 import StateStack from './StateStack.js'
 import Viewport from './Viewport.js'
-import Gamepad from './Gamepad.js'
+import GamepadListener from './GamepadListener.js'
 
 const App = () => {
   const viewport = Viewport()
   const stateStack = StateStack()
-  const gamepad = Gamepad()
+  const gamepadListener = GamepadListener()
 
   const app = {
     stateStack,
@@ -15,8 +15,10 @@ const App = () => {
       if (stateStack.isEmpty()) {
         // terminate
       }
-      // window.requestAnimationFrame(gamepad.processInput)
-      gamepad.listen()
+      if (gamepadListener.getControllers()) {
+        const gamepadEvents = gamepadListener.listen()
+        stateStack.processRealtimeInput(gamepadEvents)
+      }
       stateStack.update(deltaTime)
       stateStack.draw(viewport.canvas)
     },
@@ -36,7 +38,6 @@ const App = () => {
       window.onresize = function () {
         viewport.setAspectRatio()
       }
-      gamepad.listen()
       app.runLoop(Config.performance.frameRate)
     }
   }
