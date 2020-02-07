@@ -29,12 +29,12 @@ const StateStack = () => {
       }
     },
 
-    draw: function (canvas) {
+    draw: function (stage) {
       // clear window
       // canvas.fillStyle = "#000000";
       // canvas.fillRect(0, 0, Config.canvasWidth, Config.canvasHeight);
       this.states.forEach((state) => {
-        state.draw(canvas)
+        state.draw(stage)
       })
     },
 

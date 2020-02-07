@@ -20,7 +20,7 @@ const App = () => {
         stateStack.processRealtimeInput(gamepadEvents)
       }
       stateStack.update(deltaTime)
-      stateStack.draw(viewport.canvas)
+      stateStack.draw(viewport.stage)
     },
 
     runLoop: (fps) => {

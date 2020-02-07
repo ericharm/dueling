@@ -5,7 +5,7 @@ const Config = {
   },
 
   performance: {
-    frameRate: 30
+    frameRate: 60
   }
 }
 
