@@ -20,17 +20,29 @@ const Game = () => {
   }
 
   return {
-    processEvent: (event) => {
-    },
-
-    processRealtimeInput: (controllers) => {
-      for (let i in controllers) {
-        const controller = controllers[i]
+    processEvents: (events) => {
+      for (let i in events) {
+        const controller = events[i]
         controller.buttonEvents.forEach((event) => {
-          if (event.index === Buttons.shoot) {
+          if (event[Buttons.shoot] === 'pressed') {
             shape.graphics.clear().beginFill(
               'yellow'
             ).drawRect(0, 0, size, size).endFill()
+          } else if (event[Buttons.shoot] === 'released') {
+            shape.graphics.clear().beginFill(
+              'blue'
+            ).drawRect(0, 0, size, size).endFill()
+          }
+        })
+      }
+    },
+
+    processRealtimeInput: (realtimeInput) => {
+      for (let i in realtimeInput) {
+        const controller = realtimeInput[i]
+        controller.buttonEvents.forEach((event) => {
+          if (event.index === Buttons.shoot) {
+            console.log('charging')
           }
         })
 
