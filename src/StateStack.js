@@ -29,12 +29,12 @@ const StateStack = () => {
       }
     },
 
-    draw: function (canvas) {
+    draw: function (stage) {
       // clear window
       // canvas.fillStyle = "#000000";
       // canvas.fillRect(0, 0, Config.canvasWidth, Config.canvasHeight);
       this.states.forEach((state) => {
-        state.draw(canvas)
+        state.draw(stage)
       })
     },
 
@@ -45,11 +45,11 @@ const StateStack = () => {
       }
     },
 
-    processEvent: function (event) {
+    processEvents: function (events) {
       const stackSize = this.states.length
       if (stackSize > 0) {
         const topState = this.states[stackSize - 1]
-        topState.processEvent(event)
+        topState.processEvents(events)
         // if (topState.fluid) update the other states
       }
       // for (var i = this.stack.length - 1; i >= 0; i--) {

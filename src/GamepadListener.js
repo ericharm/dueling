@@ -1,11 +1,33 @@
 const GamepadListener = () => {
   // https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
   let controllers = {}
+  let cache = {}
 
   const Controller = (gamepad) => {
-    return {
+    const self = {
+
+      handlePressed: (events, index) => {
+        if (!cache[gamepad.index][index]) {
+          cache[gamepad.index][index] = true
+          let event = {}
+          event[index] = 'pressed'
+          events.push(event)
+        }
+      },
+
+      handleNotPressed: (events, index) => {
+        if (cache[gamepad.index][index]) {
+          delete cache[gamepad.index][index]
+          let event = {}
+          event[index] = 'released'
+          events.push(event)
+        }
+      },
+
       buttonEvents: () => {
         let events = []
+        let realtimeInput = []
+
         gamepad.buttons.forEach((button, i) => {
           let val = button
           let pressed = val === 1.0
@@ -15,23 +37,24 @@ const GamepadListener = () => {
           }
 
           if (pressed) {
-            events.push({ button, index: i })
-          } else {
-            // b.className = 'button'
-          }
+            realtimeInput.push({ button, index: i })
+            self.handlePressed(events, i)
+          } else self.handleNotPressed(events, i)
         })
-        return events
+        return { events, realtimeInput }
       },
 
       axisEvents: () => {
-        let events = []
+        let realtimeInput = []
         gamepad.axes.forEach((axis, i) => {
           const value = axis.toFixed(4)
-          if (value > 0.2 || value < -0.2) events.push({ axis, value, index: i })
+          if (value > 0.2 || value < -0.2) realtimeInput.push({ axis, value, index: i })
         })
-        return events
+        return realtimeInput
       }
     }
+
+    return self
   }
 
   const gamepadListener = {
@@ -43,6 +66,7 @@ const GamepadListener = () => {
     addGamepad: (gamepad) => {
       console.log('a new challenger has joined')
       controllers[gamepad.index] = Controller(gamepad)
+      cache[gamepad.index] = {}
     },
 
     scanGamepads: () => {
@@ -62,13 +86,16 @@ const GamepadListener = () => {
 
     listen: () => {
       gamepadListener.scanGamepads()
+      let realtimeInput = {}
       let events = {}
       for (let j in controllers) {
         const buttonEvents = controllers[j].buttonEvents()
         const axisEvents = controllers[j].axisEvents()
-        events[j] = { buttonEvents, axisEvents }
+
+        realtimeInput[j] = { axisEvents, buttonEvents: buttonEvents.realtimeInput }
+        events[j] = { buttonEvents: buttonEvents.events }
       }
-      return events
+      return { realtimeInput, events }
     }
   }
 

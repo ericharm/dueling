@@ -17,10 +17,11 @@ const App = () => {
       }
       if (gamepadListener.getControllers()) {
         const gamepadEvents = gamepadListener.listen()
-        stateStack.processRealtimeInput(gamepadEvents)
+        stateStack.processEvents(gamepadEvents.events)
+        stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
       }
       stateStack.update(deltaTime)
-      stateStack.draw(viewport.canvas)
+      stateStack.draw(viewport.stage)
     },
 
     runLoop: (fps) => {
