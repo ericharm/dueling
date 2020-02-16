@@ -15,7 +15,7 @@ const App = () => {
       if (stateStack.isEmpty()) {
         // terminate
       }
-      if (gamepadListener.getControllers()) {
+      if (gamepadListener.getPlayers()) {
         const gamepadEvents = gamepadListener.listen()
         stateStack.processEvents(gamepadEvents.events)
         stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
