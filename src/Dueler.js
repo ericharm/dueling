@@ -1,5 +1,6 @@
 import Config from '../config/config.js'
 import { Shape } from '@createjs/easeljs'
+import Arrow from './Arrow.js'
 
 const Dueler = () => {
   const shape = new Shape()
@@ -28,7 +29,7 @@ const Dueler = () => {
     stab: 6
   }
 
-  return {
+  const dueler = {
     velocity: {
       x: 0, y: 0
     },
@@ -54,7 +55,14 @@ const Dueler = () => {
           }
 
           if (event[Buttons.shoot] === 'pressed') {
+            // instead of having the dueler place the arrow on the screen,
+            // we will need to add a command to the command queue
+            // and have the game state add the arrow on the screen
+            //
+            // then the game state can be responsible for updating all entities
             shape.updateColor('yellow')
+            const arrow = Arrow()
+            arrow.shoot(shape)
           } else if (event[Buttons.shoot] === 'released') {
             shape.updateColor('blue')
           }
@@ -85,13 +93,14 @@ const Dueler = () => {
 
     draw: (stage) => {
       stage.getChildByName('rect') || stage.addChild(shape)
-      stage.update()
     },
 
     update: () => {
 
     }
   }
+
+  return dueler
 }
 
 export default Dueler

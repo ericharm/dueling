@@ -15,6 +15,7 @@ const Game = () => {
 
     draw: (stage) => {
       dueler.draw(stage)
+      stage.update()
     },
 
     update: (deltaTime) => {
