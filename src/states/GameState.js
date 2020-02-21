@@ -14,6 +14,9 @@ const Game = () => {
     },
 
     draw: (stage) => {
+      stage.children.forEach((child) => {
+        child.update()
+      })
       dueler.draw(stage)
       stage.update()
     },

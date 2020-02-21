@@ -30,6 +30,8 @@ const Dueler = () => {
   }
 
   const dueler = {
+    charge: 0,
+
     velocity: {
       x: 0, y: 0
     },
@@ -55,16 +57,17 @@ const Dueler = () => {
           }
 
           if (event[Buttons.shoot] === 'pressed') {
+            shape.updateColor('yellow')
+          } else if (event[Buttons.shoot] === 'released') {
+            shape.updateColor('blue')
             // instead of having the dueler place the arrow on the screen,
             // we will need to add a command to the command queue
             // and have the game state add the arrow on the screen
             //
             // then the game state can be responsible for updating all entities
-            shape.updateColor('yellow')
             const arrow = Arrow()
-            arrow.shoot(shape)
-          } else if (event[Buttons.shoot] === 'released') {
-            shape.updateColor('blue')
+            arrow.shoot({ ...dueler, ...shape, stage: shape.stage })
+            dueler.charge = 0
           }
         })
       }
@@ -76,6 +79,7 @@ const Dueler = () => {
         controller.buttonEvents.forEach((event) => {
           if (event.index === Buttons.shoot) {
             console.log('charging')
+            if (dueler.charge < 1) dueler.charge += 0.01
           }
         })
 
@@ -96,10 +100,12 @@ const Dueler = () => {
     },
 
     update: () => {
-
     }
   }
 
+  shape.update = () => {
+    dueler.update()
+  }
   return dueler
 }
 
