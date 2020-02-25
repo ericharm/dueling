@@ -1,8 +1,44 @@
-import State from '../State.ts'
 import Player from '../Player.ts'
-import Vector2 from '../Vector2.ts'
+import SceneNode from '../SceneNode.ts'
+import { Vector2, Command, State } from '../interfaces.ts'
+import { Queue } from 'queue-typescript'
 
-class GameState extends State {
+class Dueler extends SceneNode {
+
+}
+
+class World {
+
+  private sceneGraph: SceneNode
+
+  public constructor() {
+    this.sceneGraph = new SceneNode()
+    this.sceneGraph.addNode(new Dueler())
+  }
+
+  update(deltaTime: number, commands: Queue<Command>) {
+    /** Execute all queued commands */
+    while (commands.length > 0) {
+      this.sceneGraph.onCommand(commands.dequeue(), deltaTime)
+    }
+
+    /** Update all of the scene nodes */
+    this.sceneGraph.update(deltaTime, commands)
+    // handleCollisions();
+  }
+}
+
+class GameState implements State {
+
+  private commands: Queue<Command>
+  private world: World
+
+  public constructor() {
+    //let items: number[] = [4, 5, 6, 7];
+    //let queue = new Queue<number>(...items);
+    this.commands = new Queue<Command>()
+    this.world = new World()
+  }
 
   processEvents(players: Player[]): void {
   }
@@ -11,6 +47,7 @@ class GameState extends State {
   }
 
   update(deltaTime: number): void {
+    this.world.update(deltaTime, this.commands)
   }
 
   draw(canvas: CanvasRenderingContext2D): void {

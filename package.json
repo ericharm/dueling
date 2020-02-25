@@ -19,6 +19,7 @@
     "webpack-dev-server": "^3.10.2"
   },
   "dependencies": {
-    "@createjs/easeljs": "^2.0.0-beta.4"
+    "@createjs/easeljs": "^2.0.0-beta.4",
+    "queue-typescript": "^1.0.1"
   }
 }
