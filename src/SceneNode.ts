@@ -5,6 +5,10 @@ class SceneNode {
   private children: SceneNode[]
   private parent: SceneNode
 
+  constructor() {
+    this.children = []
+  }
+
   onCommand(command: Command, deltaTime: number) {
     // if (haveCommonCategories(command.categories, this._categories)) {
     //   command.action(this, deltaTime)
@@ -18,6 +22,11 @@ class SceneNode {
     this.children.push(node)
   }
 
+  update(deltaTime: number, commands: Queue<Command>) {
+    this.updateCurrent(deltaTime, commands)
+    this.updateChildren(deltaTime, commands)
+  }
+
   updateCurrent(deltaTime: number, commands: Queue<Command>) {
 
   }
@@ -26,11 +35,6 @@ class SceneNode {
     this.children.forEach((child) => {
       child.update(deltaTime, commands)
     })
-  }
-
-  update(deltaTime: number, commands: Queue<Command>) {
-    this.updateCurrent(deltaTime, commands)
-    this.updateChildren(deltaTime, commands)
   }
 }
 

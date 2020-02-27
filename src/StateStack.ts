@@ -1,5 +1,6 @@
 import Player from './Player.ts'
 import State from './State.ts'
+import { GamepadUpdate } from './interfaces.ts'
 
 class StateStack {
   states: State[]
@@ -22,14 +23,14 @@ class StateStack {
     }
   }
 
-  processRealtimeInput(players: Player[]) {
+  processRealtimeInput(players: object[]) {
     for (let i = this.states.length - 1; i >= 0; i--) {
       // pass events to each state from top of stack to bottom
       this.states[i].processRealtimeInput(players)
     }
   }
 
-  processEvents(players: Player[]) {
+  processEvents(players: object[]) {
     const stackSize: number = this.states.length
     if (stackSize > 0) {
       const topState: State = this.states[stackSize - 1]

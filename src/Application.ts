@@ -1,6 +1,7 @@
 import Viewport from './Viewport.ts'
 import StateStack from './StateStack.ts'
 import GamepadListener from './GamepadListener.ts'
+import { GamepadUpdate } from './interfaces.ts'
 
 interface Config {
   frameRate: number
@@ -19,12 +20,11 @@ class Application {
   }
 
   tick(deltaTime: number): void {
-    console.log('tick')
     if (this.stateStack.isEmpty()) {
       // terminate
     }
     if (this.gamepadListener.getPlayers()) {
-      const gamepadEvents: any = this.gamepadListener.listen()
+      const gamepadEvents: GamepadUpdate = this.gamepadListener.listen()
       this.stateStack.processEvents(gamepadEvents.events)
       this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
     }
@@ -33,10 +33,10 @@ class Application {
   }
 
   runLoop (fps: number): void {
-    let previous: number = window.performance.now()
+    let previous = window.performance.now()
     setInterval(() => {
-      const now: number = window.performance.now()
-      const delta: number = now - previous
+      const now = window.performance.now()
+      const delta = now - previous
       this.tick(delta / fps)
       previous = window.performance.now()
     }, 1000 / fps)

@@ -18,3 +18,8 @@ export interface State {
   update(deltaTime: number): void
   draw(c: CanvasRenderingContext2D): void
 }
+
+export interface GamepadUpdate {
+  events: object[]
+  realtimeInput: object[]
+}
