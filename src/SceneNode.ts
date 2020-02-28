@@ -27,13 +27,26 @@ class SceneNode {
     this.updateChildren(deltaTime, commands)
   }
 
-  updateCurrent(deltaTime: number, commands: Queue<Command>) {
+  draw(canvas: CanvasRenderingContext2D): void {
+    this.drawCurrent(canvas)
+    this.drawChildren(canvas)
+  }
 
+  updateCurrent(deltaTime: number, commands: Queue<Command>) {
   }
 
   updateChildren(deltaTime: number, commands: Queue<Command>) {
     this.children.forEach((child) => {
       child.update(deltaTime, commands)
+    })
+  }
+
+  drawCurrent(canvas: CanvasRenderingContext2D): void {
+  }
+
+  drawChildren(canvas: CanvasRenderingContext2D): void {
+    this.children.forEach((child) => {
+      child.draw(canvas)
     })
   }
 }

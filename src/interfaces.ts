@@ -7,6 +7,11 @@ export interface Vector2 {
   y: number
 }
 
+export interface Rectangle {
+  position: Vector2,
+  size: Vector2
+}
+
 export interface Command {
   action: (this: SceneNode) => void
   categories: Category[]
