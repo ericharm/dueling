@@ -23,10 +23,10 @@ class Application {
     if (this.stateStack.isEmpty()) {
       // terminate
     }
-    if (this.gamepadListener.getPlayers()) {
+    if (this.gamepadListener.hasControllers()) {
       const gamepadEvents: GamepadUpdate = this.gamepadListener.listen()
-      this.stateStack.processEvents(gamepadEvents.events)
-      this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
+    //   this.stateStack.processEvents(gamepadEvents.events)
+    //   this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
     }
     this.stateStack.update(deltaTime)
     this.stateStack.draw(this.viewport.canvas)

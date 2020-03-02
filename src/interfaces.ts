@@ -28,3 +28,8 @@ export interface GamepadUpdate {
   events: object[]
   realtimeInput: object[]
 }
+
+export interface GamepadInput {
+  button: GamepadButton
+  index: any
+}
