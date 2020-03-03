@@ -1,6 +1,6 @@
 import Viewport from './Viewport.ts'
 import StateStack from './StateStack.ts'
-import { GamepadListener } from './GamepadListener.ts'
+import GamepadListener from './GamepadListener.ts'
 
 interface Config {
   frameRate: number

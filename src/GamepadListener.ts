@@ -1,5 +1,5 @@
 import { GamepadUpdate, GamepadInput } from './interfaces.ts'
-// maybe move gamepad interfaces into this file
+
 type StringList = { [key: number]: string }
 type Cache = { [key: number]: StringList }
 
@@ -8,14 +8,14 @@ interface Buddy {
   events: any
 }
 
-interface RealtimeInputEvent {
+interface RealtimeButtonEvent {
   button: GamepadButton
   index: number
 }
 
 interface Other {
   axisEvents: any[]
-  buttonEvents: RealtimeInputEvent[] }
+  buttonEvents: RealtimeButtonEvent[]
 }
 
 interface AxisEvent {
@@ -26,7 +26,7 @@ interface AxisEvent {
 
 interface GamepadInputUpdate {
   events: StringList[]
-  realtimeInput: RealtimeInputEvent[]
+  realtimeInput: RealtimeButtonEvent[]
 }
 
 class Controller {
@@ -38,16 +38,23 @@ class Controller {
 
   public axisEvents(): AxisEvent[] {
     let realtimeInput: AxisEvent[] = []
-    gamepad.axes.forEach((axis, i: number) => {
-      const value = axis.toFixed(4)
-      if (value > 0.2 || value < -0.2) realtimeInput.push({ axis, value, index: i })
+    this.gamepad.axes.forEach((axis: number, i: number) => {
+      const value_: number = axis
+      const value__ = value_.toFixed(4)
+      if (Number(value__) > 0.2 || Number(value__) < -0.2) {
+        let rti: AxisEvent = { axis: null, value: null, index: null }
+        rti.axis = axis
+        rti.value = value__.toString()
+        rti.index = i
+        realtimeInput.push(rti)
+      }
     })
     return realtimeInput
   }
 
   public buttonEvents(cache: Cache): GamepadInputUpdate {
     let events: StringList[] = []
-    let realtimeInput: RealtimeInputEvent[] = []
+    let realtimeInput: RealtimeButtonEvent[] = []
 
     // const buttons: GamepadButton[] = this.gamepad.buttons
     this.gamepad.buttons.forEach((button: GamepadButton, i: number) => {
