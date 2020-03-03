@@ -24,7 +24,7 @@ class Application {
       // terminate
     }
     if (this.gamepadListener.hasControllers()) {
-      const gamepadEvents: GamepadUpdate = this.gamepadListener.listen()
+      const gamepadEvents  = this.gamepadListener.listen()
     //   this.stateStack.processEvents(gamepadEvents.events)
     //   this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
     }

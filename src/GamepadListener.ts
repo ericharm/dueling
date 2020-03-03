@@ -1,13 +1,20 @@
 import { GamepadUpdate, GamepadInput } from './interfaces.ts'
 // maybe move gamepad interfaces into this file
 
-interface GamepadInputUpdate {
-}
-
-interface GamepadButtonEvent {
+interface RealtimeInputEvent {
   button: GamepadButton
   index: number
 }
+
+interface GamepadInputUpdate {
+  events: { [key: number]: string }[]
+  realtimeInput: RealtimeInputEvent[]
+}
+
+// interface GamepadButtonEvent {
+  // button: GamepadButton
+  // index: number
+// }
 
 class Controller {
   private gamepad: Gamepad
@@ -16,14 +23,9 @@ class Controller {
     this.gamepad = gamepad
   }
 
-  // export interface GamepadUpdate {
-    // events: object[]
-    // realtimeInput: object[]
-  // }
-
-  buttonEvents(cache: { [key: number]: { [key: number]: string } }): GamepadButtonEvent[] {
-    let events: GamepadInput[] = []
-    let realtimeInput: GamepadInput[] = []
+  public buttonEvents(cache: { [key: number]: { [key: number]: string } }): GamepadInputUpdate {
+    let events: { [key: number]: string }[] = []
+    let realtimeInput: RealtimeInputEvent[] = []
 
     // const buttons: GamepadButton[] = this.gamepad.buttons
     this.gamepad.buttons.forEach((button: GamepadButton, i: number) => {
@@ -67,7 +69,6 @@ class GamepadListener {
   private scanGamepads() {
     const gamepads = this.navigator.getGamepads()
 
-    debugger
     Array.from(gamepads).forEach((gamepad) => {
       if (gamepad) {
         // if (gamepad.index in this.controllers) {
@@ -82,14 +83,12 @@ class GamepadListener {
   private addGamepad(gamepad: Gamepad) {
   // private addGamepad(gamepad: Gamepad) {
     console.log('a new challenger has joined')
-    debugger
     this.controllers[gamepad.index] = new Controller(gamepad)
     this.cache[gamepad.index] = {}
   }
 
   // listen(): GamepadUpdate {
   listen(): { [key: string]: object } {
-    console.log('listen')
     this.scanGamepads()
     let realtimeInput = {}
     // let events: GamepadUpdate = {}
