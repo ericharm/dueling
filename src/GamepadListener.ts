@@ -1,20 +1,33 @@
 import { GamepadUpdate, GamepadInput } from './interfaces.ts'
 // maybe move gamepad interfaces into this file
+type StringList = { [key: number]: string }
+type Cache = { [key: number]: StringList }
+
+interface Buddy {
+  realtimeInput: any
+  events: any
+}
 
 interface RealtimeInputEvent {
   button: GamepadButton
   index: number
 }
 
-interface GamepadInputUpdate {
-  events: { [key: number]: string }[]
-  realtimeInput: RealtimeInputEvent[]
+interface Other {
+  axisEvents: any[]
+  buttonEvents: RealtimeInputEvent[] }
 }
 
-// interface GamepadButtonEvent {
-  // button: GamepadButton
-  // index: number
-// }
+interface AxisEvent {
+  axis: number
+  value: string
+  index: number
+}
+
+interface GamepadInputUpdate {
+  events: StringList[]
+  realtimeInput: RealtimeInputEvent[]
+}
 
 class Controller {
   private gamepad: Gamepad
@@ -23,8 +36,17 @@ class Controller {
     this.gamepad = gamepad
   }
 
-  public buttonEvents(cache: { [key: number]: { [key: number]: string } }): GamepadInputUpdate {
-    let events: { [key: number]: string }[] = []
+  public axisEvents(): AxisEvent[] {
+    let realtimeInput: AxisEvent[] = []
+    gamepad.axes.forEach((axis, i: number) => {
+      const value = axis.toFixed(4)
+      if (value > 0.2 || value < -0.2) realtimeInput.push({ axis, value, index: i })
+    })
+    return realtimeInput
+  }
+
+  public buttonEvents(cache: Cache): GamepadInputUpdate {
+    let events: StringList[] = []
     let realtimeInput: RealtimeInputEvent[] = []
 
     // const buttons: GamepadButton[] = this.gamepad.buttons
@@ -49,7 +71,7 @@ class Controller {
 class GamepadListener {
 
   private controllers: { [key: number]: Controller }
-  private cache: { [key: number]: any } // i don't yet know what type the values are
+  private cache: Cache
   private navigator: Navigator
 
   public constructor() {
@@ -60,9 +82,9 @@ class GamepadListener {
       this.addGamepad(e.gamepad)
     })
 
-    window.addEventListener('gamepaddisconnected', (e) => {
-      // const gamepad = e.gamepad
-      // delete this.controllers[gamepad.index]
+    window.addEventListener('gamepaddisconnected', (e: GamepadEvent) => {
+      const gamepad = e.gamepad
+      delete this.controllers[gamepad.index]
     })
   }
 
@@ -71,11 +93,11 @@ class GamepadListener {
 
     Array.from(gamepads).forEach((gamepad) => {
       if (gamepad) {
-        // if (gamepad.index in this.controllers) {
-          // this.controllers[gamepad.index] = new Controller(gamepad)
-        // } else {
-          // this.addGamepad(gamepad)
-        // }
+        if (gamepad.index in this.controllers) {
+          this.controllers[gamepad.index] = new Controller(gamepad)
+        } else {
+          this.addGamepad(gamepad)
+        }
       }
     })
   }
@@ -88,18 +110,16 @@ class GamepadListener {
   }
 
   // listen(): GamepadUpdate {
-  listen(): { [key: string]: object } {
+  listen(): Buddy {
     this.scanGamepads()
-    let realtimeInput = {}
-    // let events: GamepadUpdate = {}
-    let events: { [key: number]: { [key: string]: { [key: number]: string }[] } } = {}
+    let realtimeInput: { [key: string]: Other } = {}
+    let events: { [key: number]: { [key: string]: StringList[] } } = {}
     for (let j in this.controllers) {
       const buttonEvents = this.controllers[j].buttonEvents(this.cache)
-      // const axisEvents = this.controllers[j].axisEvents()
+      const axisEvents = this.controllers[j].axisEvents()
 
-      // realtimeInput[j] = { axisEvents, buttonEvents: buttonEvents.realtimeInput }
+      realtimeInput[j] = { axisEvents, buttonEvents: buttonEvents.realtimeInput }
       events[j] = { buttonEvents: buttonEvents.events }
-      // events[j] = { buttonEvents: buttonEvents.events }
     }
     return { realtimeInput, events }
 

@@ -1,7 +1,6 @@
 import Viewport from './Viewport.ts'
 import StateStack from './StateStack.ts'
-import GamepadListener from './GamepadListener.ts'
-import { GamepadUpdate } from './interfaces.ts'
+import { GamepadListener } from './GamepadListener.ts'
 
 interface Config {
   frameRate: number
@@ -24,7 +23,7 @@ class Application {
       // terminate
     }
     if (this.gamepadListener.hasControllers()) {
-      const gamepadEvents  = this.gamepadListener.listen()
+      const gamepadEvents = this.gamepadListener.listen()
     //   this.stateStack.processEvents(gamepadEvents.events)
     //   this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
     }
