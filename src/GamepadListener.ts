@@ -3,7 +3,7 @@ import { GamepadUpdate, GamepadInput } from './interfaces.ts'
 type StringList = { [key: number]: string }
 type Cache = { [key: number]: StringList }
 
-interface Buddy {
+interface ControllerListInput {
   realtimeInput: any
   events: any
 }
@@ -13,7 +13,7 @@ interface RealtimeButtonEvent {
   index: number
 }
 
-interface Other {
+interface GamepadEventList {
   axisEvents: any[]
   buttonEvents: RealtimeButtonEvent[]
 }
@@ -110,16 +110,14 @@ class GamepadListener {
   }
 
   private addGamepad(gamepad: Gamepad) {
-  // private addGamepad(gamepad: Gamepad) {
     console.log('a new challenger has joined')
     this.controllers[gamepad.index] = new Controller(gamepad)
     this.cache[gamepad.index] = {}
   }
 
-  // listen(): GamepadUpdate {
-  listen(): Buddy {
+  public listen(): ControllerListInput {
     this.scanGamepads()
-    let realtimeInput: { [key: string]: Other } = {}
+    let realtimeInput: { [key: string]: GamepadEventList } = {}
     let events: { [key: number]: { [key: string]: StringList[] } } = {}
     for (let j in this.controllers) {
       const buttonEvents = this.controllers[j].buttonEvents(this.cache)
@@ -129,14 +127,9 @@ class GamepadListener {
       events[j] = { buttonEvents: buttonEvents.events }
     }
     return { realtimeInput, events }
-
-    // return {
-      // events: [],
-      // realtimeInput: []
-    // }
   }
 
-  hasControllers(): { [key: number]: Controller } {
+  public hasControllers(): { [key: number]: Controller } {
     if (Object.keys(this.controllers).length) return this.controllers
   }
 }
