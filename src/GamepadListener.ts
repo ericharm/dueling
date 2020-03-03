@@ -1,6 +1,14 @@
 import { GamepadUpdate, GamepadInput } from './interfaces.ts'
 // maybe move gamepad interfaces into this file
 
+interface GamepadInputUpdate {
+}
+
+interface GamepadButtonEvent {
+  button: GamepadButton
+  index: number
+}
+
 class Controller {
   private gamepad: Gamepad
 
@@ -13,7 +21,7 @@ class Controller {
     // realtimeInput: object[]
   // }
 
-  buttonEvents(cache: { [key: number]: any }): { [key: string]: GamepadInput[] } {
+  buttonEvents(cache: { [key: number]: { [key: number]: string } }): GamepadButtonEvent[] {
     let events: GamepadInput[] = []
     let realtimeInput: GamepadInput[] = []
 
@@ -31,6 +39,7 @@ class Controller {
         // this.handlePressed(events, i, cache)
       } // else this.handleNotPressed(events, i, cache)
     })
+
     return { events, realtimeInput }
   }
 }
@@ -79,12 +88,12 @@ class GamepadListener {
   }
 
   // listen(): GamepadUpdate {
-  listen(): any {
+  listen(): { [key: string]: object } {
     console.log('listen')
     this.scanGamepads()
     let realtimeInput = {}
     // let events: GamepadUpdate = {}
-    let events = {}
+    let events: { [key: number]: { [key: string]: { [key: number]: string }[] } } = {}
     for (let j in this.controllers) {
       const buttonEvents = this.controllers[j].buttonEvents(this.cache)
       // const axisEvents = this.controllers[j].axisEvents()
