@@ -1,6 +1,6 @@
 import Viewport from './Viewport.ts'
 import StateStack from './StateStack.ts'
-import GamepadListener from './GamepadListener.ts'
+import GamepadListener from './GamepadListener.js'
 
 interface Config {
   frameRate: number
@@ -10,20 +10,21 @@ class Application {
 
   public stateStack: StateStack
   public viewport: Viewport
-  public gamepadListener: GamepadListener
+  //  public gamepadListener: GamepadListener
 
   constructor () {
+    let gamepadListener = GamepadListener.new()
     this.viewport = new Viewport()
     this.stateStack = new StateStack()
-    this.gamepadListener = new GamepadListener()
+    // this.gamepadListener = new GamepadListener()
   }
 
   tick(deltaTime: number): void {
     if (this.stateStack.isEmpty()) {
       // terminate
     }
-    if (this.gamepadListener.hasControllers()) {
-      const gamepadEvents = this.gamepadListener.listen()
+    if (false) { //this.gamepadListener.hasControllers()) {
+      // const gamepadEvents = this.gamepadListener.listen()
     //   this.stateStack.processEvents(gamepadEvents.events)
     //   this.stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
     }
@@ -47,6 +48,10 @@ class Application {
       this.viewport.setAspectRatio()
     }
     this.runLoop(args.frameRate)
+
+    document.addEventListener('axis', (event) => {
+      console.log('axis event', event)
+    })
   }
 }
 

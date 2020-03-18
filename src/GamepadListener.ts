@@ -13,15 +13,23 @@ interface RealtimeButtonEvent {
   index: number
 }
 
-interface GamepadEventList {
-  axisEvents: any[]
-  buttonEvents: RealtimeButtonEvent[]
-}
-
 interface AxisEvent {
   axis: number
   value: string
   index: number
+}
+
+// class AEvent extends EventEmitter {
+/*
+class AEvent {
+  public axis: number
+
+}
+ */
+
+interface GamepadEventList {
+  axisEvents: AxisEvent[]
+  buttonEvents: RealtimeButtonEvent[]
 }
 
 interface GamepadInputUpdate {
@@ -37,15 +45,18 @@ class Controller {
   }
 
   public axisEvents(): AxisEvent[] {
+    // var event = new Event('axis')
+
     let realtimeInput: AxisEvent[] = []
     this.gamepad.axes.forEach((axis: number, i: number) => {
       const value_: number = axis
       const value__ = value_.toFixed(4)
       if (Number(value__) > 0.2 || Number(value__) < -0.2) {
-        let rti: AxisEvent = { axis: null, value: null, index: null }
-        rti.axis = axis
-        rti.value = value__.toString()
-        rti.index = i
+        // let ev = new AEvent('axis')
+        let ev = new Event(null)
+        // ev.axis = axis
+        let rti = { axis, value: value__.toString(), index: i }
+        document.dispatchEvent(ev)
         realtimeInput.push(rti)
       }
     })
