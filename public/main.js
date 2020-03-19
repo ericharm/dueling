@@ -1,3 +1,4 @@
+/*
 var ar = 16 / 9
 
 function fitCanvasToAspectRatio (aspectRatio) {
@@ -11,3 +12,4 @@ fitCanvasToAspectRatio(ar)
 window.onresize = function () {
   fitCanvasToAspectRatio(ar)
 }
+*/
