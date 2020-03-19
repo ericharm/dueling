@@ -9,11 +9,11 @@ const App = () => {
 
   const app = {
     tick: (deltaTime) => {
-      if (this.stateStack.isEmpty()) {
+      if (stateStack.isEmpty()) {
         // terminate
       }
       if (gamepadListener.hasControllers()) {
-        const gamepadEvents = this.gamepadListener.listen()
+        const gamepadEvents = gamepadListener.listen()
         stateStack.processEvents(gamepadEvents.events)
         stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
       }
