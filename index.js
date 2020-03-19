@@ -1,9 +1,8 @@
 import App from './src/App.js'
-// import GameState from './src/states/GameState.ts'
+// import TitleScreen from './src/states/TitleScreen.js'
+// import GameState from './src/states/GameState.js'
 
-console.log('awef', App)
-App()
-console.log('serg')
-// const GameState = GameState()
+const app = App()
+// const game = GameState()
 // app.stateStack.push(game)
-// app.init({ frameRate: 60 })
+app.init()

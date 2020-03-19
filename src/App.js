@@ -1,5 +1,6 @@
-import Viewport from './Viewport.js'
+// import Config from '../config/config.js'
 import StateStack from './StateStack.js'
+import Viewport from './Viewport.js'
 import GamepadListener from './GamepadListener.js'
 
 const App = () => {
@@ -8,41 +9,38 @@ const App = () => {
   const gamepadListener = GamepadListener()
 
   const app = {
+    stateStack,
+
     tick: (deltaTime) => {
       if (stateStack.isEmpty()) {
         // terminate
       }
-      if (gamepadListener.hasControllers()) {
+      if (gamepadListener.getPlayers()) {
         const gamepadEvents = gamepadListener.listen()
         stateStack.processEvents(gamepadEvents.events)
         stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
       }
       stateStack.update(deltaTime)
-      stateStack.draw(viewport.canvas)
+      stateStack.draw(viewport.stage)
     },
 
     runLoop: (fps) => {
-      console.log('run loop')
       let previous = window.performance.now()
-      setInterval(() => {
+      setInterval(function () {
         const now = window.performance.now()
         const delta = now - previous
-        this.tick(delta / fps)
+        app.tick(delta / fps)
         previous = window.performance.now()
       }, 1000 / fps)
     },
 
     init: (args) => {
-      console.log('init')
       viewport.setAspectRatio()
-      window.onresize = () => {
+      window.onresize = function () {
         viewport.setAspectRatio()
       }
-      this.runLoop(args.frameRate)
-
-      document.addEventListener('axis', (event) => {
-        console.log('axis event', event)
-      })
+      // app.runLoop(Config.performance.frameRate)
+      app.runLoop(40)
     }
   }
 

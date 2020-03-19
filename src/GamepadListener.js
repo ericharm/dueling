@@ -1,4 +1,4 @@
-import Player from './Player.ts'
+import Player from './Player.js'
 
 const GamepadListener = () => {
   // https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API
@@ -59,8 +59,4 @@ const GamepadListener = () => {
   return gamepadListener
 }
 
-export default {
-  new: function () {
-    console.log('awef')
-  }
-}
+export default GamepadListener

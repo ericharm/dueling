@@ -12,15 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.8.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.2"
   },
   "dependencies": {
-    "@createjs/easeljs": "^2.0.0-beta.4",
-    "queue-typescript": "^1.0.1",
-    "rxjs": "^6.5.4"
+    "@createjs/easeljs": "^2.0.0-beta.4"
   }
 }
