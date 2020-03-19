@@ -11,7 +11,7 @@ const Viewport = () => {
   canvasElement.height = 1000
 
   return {
-    canvas: canvas,
+    canvas,
     setAspectRatio: () => {
       const appContainer = document.querySelector('#app')
       appContainer.style.maxWidth = maxWidth + 'px'

@@ -4,6 +4,19 @@ import Viewport from './Viewport.js'
 import GamepadListener from './GamepadListener.js'
 
 const App = () => {
+  // this will all move into a gameControllers thing
+  document.addEventListener('buttonPress', function (e) {
+    console.log('buttonPress', e.detail)
+  }, false)
+
+  document.addEventListener('buttonRelease', function (e) {
+    console.log('buttonRelease', e.detail)
+  }, false)
+
+  document.addEventListener('axis', function (e) {
+    console.log('axis', e.detail)
+  }, false)
+
   const viewport = Viewport()
   const stateStack = StateStack()
   const gamepadListener = GamepadListener()
@@ -21,7 +34,7 @@ const App = () => {
         stateStack.processRealtimeInput(gamepadEvents.realtimeInput)
       }
       stateStack.update(deltaTime)
-      stateStack.draw(viewport.stage)
+      stateStack.draw(viewport.canvas)
     },
 
     runLoop: (fps) => {
